@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring System</title>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'style.css') }}">
+    
+</head>
+<body>
+    <div id="container">
+        <div id="charts">
+            <div id="chartTipo1" class="chart-box">
+                <div class="plot-container" id="plotTipo1"></div>
+            </div>
+            <div id="chartTipo2" class="chart-box">
+                <div class="plot-container" id="plotTipo2"></div>
+            </div>
+            <div id="chartTipo3" class="chart-box">
+                <div class="plot-container" id="plotTipo3"></div>
+            </div>
+        </div>
+    </div>
+    <div id="info">
+        <p style="font-size: 2vw;font-weight: bold;text-align: center;">Real Time Issues/Problems Transactions</p>
+        <div class="table">
+            <h2>Quantity of Transactions in the Period x Status</h2>
+            <table>
+                <tr>
+                    <th>Status</th>
+                    <th>Quantity</th>
+                    <th>Anomalies</th>
+                </tr>
+                <tr>
+                    <td>Failed</td>
+                    <td id="qtdTipo1">0</td>
+                    <td id="anomaliasTipo1" class="anomalias">0</td>
+                </tr>
+                <tr>
+                    <td>Reversed</td>
+                    <td id="qtdTipo2">0</td>
+                    <td id="anomaliasTipo2" class="anomalias">0</td>
+                </tr>
+                <tr>
+                    <td>Denied</td>
+                    <td id="qtdTipo3">0</td>
+                    <td id="anomaliasTipo3" class="anomalias">0</td>
+                </tr>
+                <tr>
+                    <td><b>Overall</b></td>
+                    <td id="totalQtd">0</td>
+                    <td id="totalAnomalias" class="anomalias">0</td>
+                </tr>
+            </table>
+        </div>
+        <div class="trend-container">
+            <h1>Last Minutes Data Trends x Status</h1>
+            <div style="display: flex;align-items: center;justify-content: center;">
+                <div class="trend">
+                    <h1>Failed</h1>
+                    <i id="iconTipo1" class="fa-solid fa-arrow-right fa-beat fa-xl"></i>
+                    <p id="trendTipo1">Stable</p>
+                </div>
+                <div class="trend">
+                    <h1>Reversed</h1>
+                    <i id="iconTipo2" class="fa-solid fa-arrow-right fa-beat fa-xl"></i>
+                    <p id="trendTipo2">Stable</p>
+                </div>
+                <div class="trend">
+                    <h1>Denied</h1>
+                    <i id="iconTipo3" class="fa-solid fa-arrow-right fa-beat fa-xl"></i>
+                    <p id="trendTipo3">Stable</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="trend-container">
+            <h3 style="width: 100%;text-align: center;">Line Graph Legend</h3>
+            <div class="legend-container">
+                <div>
+                    <span class="legend-item" style="color: #1f77b4;"><i class="fa-solid fa-grip-lines-vertical"></i> Failed</span>
+                    <span class="legend-item" style="color: #1f77b4;"><i class="fa-solid fa-grip-lines-vertical"></i> Reversed</span>
+                    <span class="legend-item" style="color: #1f77b4;"><i class="fa-solid fa-grip-lines-vertical"></i> Denied</span>
+                    <span class="legend-item" style="color: #d62728;"><i class="fa-solid fa-circle" style="color: #d21e1e;"></i> Anomalies</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="credit">By Cassiano Sobierai</div>
+    <script>
+        {% include 'script.js' %}
+    </script>
+</body>
+</html>
