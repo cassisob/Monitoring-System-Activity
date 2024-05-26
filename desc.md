@@ -23,8 +23,8 @@ the technical assessment in the end, enjoy!
 
 ### 3.1 - Get your hands dirty
 
-Using [this csv](https://github.com/thais-menezes/monitoring/blob/main/checkout_1.csv)
-and using [this csv](https://github.com/thais-menezes/monitoring/blob/main/checkout_2.csv)
+Using [this csv](https://github.com/cassisob/Monitoring-System-Activity/blob/main/checkout_1.csv)
+and using [this csv](https://github.com/cassisob/Monitoring-System-Activity/blob/main/checkout_2.csv)
  with hypothetical checkout data, imagine that you are trying to understand if there is any kind of anomaly behavior.
 
 1. Analyze the data provided and present your conclusions .
@@ -38,8 +38,8 @@ and using [this csv](https://github.com/thais-menezes/monitoring/blob/main/check
 The monitoring works by receiving information about a transaction and inferring whether it is a failed or denied, or reversed or aprroved transaction. 
 We work mostly with SQL, PromQL, Ruby and Python, but you can use any programming language that you want. 
 
-Please use the data of [this csv](https://github.com/thais-menezes/monitoring/blob/main/transactions_1.csv)
-and the data of [this csv](https://github.com/thais-menezes/monitoring/blob/main/transactions_2.csv). 
+Please use the data of [this csv](https://github.com/cassisob/Monitoring-System-Activity/blob/main/transactions_1.csv)
+and the data of [this csv](https://github.com/cassisob/Monitoring-System-Activity/blob/main/transactions_2.csv). 
 Consider that transactions with the flag ```denied``` are transactions denied by risk of the issuers.
 Consider that transactions with the flag ```reversed or failed``` are transactions with problems.
 Note: F1 represents the quantity of transactions per minute from all pos from our costumers. So with this data you can see the diferent status per minute and see if it is going well or not. When you see the padron, you can predict a alarm for the anomaly.
