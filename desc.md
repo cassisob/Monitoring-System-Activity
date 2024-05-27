@@ -5,10 +5,6 @@ Thomas Redman.<br/>
 
 ## 1. Introduction
 
-This test is intended for candidates applying to Monitoring analyst positions at CloudWalk.
-If you get here, we already like you and see you as a good fit with our company. 
-Now, we propose a challenge similar to the ones that we face on a daily basis.
-
 The challenges were created with the objective of helping you build the knowledge base needed to implement 
 the technical assessment in the end, enjoy!
 
@@ -18,6 +14,19 @@ the technical assessment in the end, enjoy!
 ## 2. Pre-requisites
 
 - A development environment
+
+```python
+from datetime import datetime, time
+from flask import Flask, jsonify, render_template, request
+import numpy as np
+import pandas as pd
+from apscheduler.schedulers.background import BackgroundScheduler
+import pymsteams
+
+from sklearn.discriminant_analysis import StandardScaler
+from sklearn.neighbors import LocalOutlierFactor
+from sklearn.linear_model import LinearRegression
+```
 
 ## 3. Tasks
 
@@ -61,9 +70,3 @@ You are free to determine the methods to approve/deny the transactions, but a fe
 - Alert transactions if failed transactions are above normal;
 - Alert transactions if reversed transactions are above normal;
 - Alert transactions if denied transactions are above normal;
-
-## 4. Deliverables
-
-You are expected to submit a presentation with your answers and your project and be ready to present that in 30 minutes in a interview.
-If you want you can submit a compacted git repository.
-We hope you have fun, learn and challenge yourself during this task :)
