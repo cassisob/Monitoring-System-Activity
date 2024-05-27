@@ -1,9 +1,7 @@
 var transaction_to_send = {{simulate_transactions | safe}};
 let currentIndex = 0;
-console.log(transaction_to_send);
 
 async function send_data() {
-    console.log(currentIndex >= transaction_to_send.length)
 
     if (currentIndex >= transaction_to_send.length) {
         console.log("All data has been sent.");
@@ -11,7 +9,6 @@ async function send_data() {
     }
     
     const item = transaction_to_send[currentIndex];
-    console.log(item);
     currentIndex++;
 
     var response = await fetch('/receive', {
@@ -32,8 +29,6 @@ function formatTime(timestamp) {
     return `${hours}:${minutes}`;
 }
 
-
-// Function to update the charts
 async function updateCharts() {
 
     var response = await fetch('/', {
@@ -154,6 +149,5 @@ setInterval(() => {
     send_data();
 }, 100);
 
-// Call the functions initially to populate the data
 updateCharts();
 send_data();

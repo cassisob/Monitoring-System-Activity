@@ -28,7 +28,6 @@ ANOMALIES_DATA['time'] = pd.to_datetime(ANOMALIES_DATA['time'])
 TEAMS_WEBHOOK = "YOUR_COMPANY_TEAMS_WEBHOOK"
 
 
-
 # GENERAL FUNCTIONS
 
 # CALCULATES TRENDS
@@ -40,65 +39,56 @@ def calculate_trend(statusType):
 
     if len(data_to_analyze) > 0:
 
+        # SETTING UP THE DATA TO THE MODEL
         min_date = data_to_analyze['time'].min()
         data_to_analyze['x_seconds'] = (data_to_analyze['time'] - min_date).astype('timedelta64[s]').astype('int64')
 
-        # Convertendo segundos para minutos
         data_to_analyze['x_minutes'] = data_to_analyze['x_seconds'] / 60
         
-        # Preparando os dados para o modelo
         X = data_to_analyze[['x_minutes']].values
         y = data_to_analyze['F1'].values
         
-        # Criando o modelo de regressão linear
+        # CREATING THE LINEAR REGRESSION MODEL
         model = LinearRegression()
 
-        # Obtendo o coeficiente angular (slope)
+        # THE COEFFICIENT INDICATES THE DATA TREND
         slope = model.fit(X, y).coef_[0]
         
-        # Classificando a tendência com base no coeficiente angular
+        # DEPENDING THE TEAM NEEDS, THIS CAN BE CHANGED
         if slope > 0.4:
-            return 2 # "Rising a lot"
+            return 2 
+            # Rising a lot
         elif slope > 0.1:
-            return 1 # "Rising"
+            return 1 
+            # Rising
         elif slope > -0.1 and slope < 0.1:
-            return 0 # "Stable"
+            return 0 
+            # Stable
         elif slope > -0.4:
-            return -1 # "Falling"
+            return -1 
+            # Falling
         else:
-            return -2 # "Falling a lot"
+            return -2 
+            # Falling a lot
         
     return 0
 
 
 def is_anomalous_lof(new_data, model, X_train):
-    # Normalizar os dados de treino
+    # NORMALIZE THE TRAINING DATA
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     
-    # Adicionar e normalizar o novo dado ao conjunto de dados de treinamento
+    # ADD AND NORMALIZE THE NEW DATA TO THE TRAINING DATASET
     new_data_scaled = scaler.transform([[new_data['F1']]])
     X_new = np.vstack((X_train_scaled, new_data_scaled))
     
-    # Ajustar o modelo com os novos dados e prever o outlier
+    # FIT THE MODEL WITH THE NEW DATA AND PREDICT THE OUTLIER
     model.fit(X_new)
     lof_outlier_new = model.fit_predict(X_new)
     
-    # Verificar se o novo dado é um outlier
+    # RETURN A BOOLEAN
     return lof_outlier_new[-1] == -1
-
-
-def check_missing_zero_values():
-    global TRANSACTION_DATA
-
-    statuses = ['approved', 'processing', 'denied', 'backend_reversed', 'reversed', 'refunded', 'failed']
-
-    # SINCE WE ARE SIMULATING THE DATA, WE CANNOT USE THE CURRENT DATETIME
-    # five_minutes_ago = datetime.now() - pd.Timedelta(hours=1)
-    one_minute_future = TRANSACTION_DATA['time'].max() + pd.Timedelta(minutes=1)
-    future_data = pd.DataFrame({'time' : [one_minute_future] * 7, 'status': statuses, 'F1': [0] * 7})
-
-    TRANSACTION_DATA = pd.concat([TRANSACTION_DATA, future_data]).reset_index().sort_values(by='time')
 
 
 def send_teams_alert(status):
@@ -111,7 +101,7 @@ def send_teams_alert(status):
     transaction_status_section.activityText(status)
     teams.addSection(transaction_status_section)
 
-    five_minutes_ago = TRANSACTION_DATA['time'].max() - pd.Timedelta(hours=0.5)
+    five_minutes_ago = TRANSACTION_DATA['time'].max() - pd.Timedelta(minutes=5)
     data = TRANSACTION_DATA[TRANSACTION_DATA['time'] >= five_minutes_ago]
     data = data[data['status'] == status][['F1']]
 
@@ -122,6 +112,21 @@ def send_teams_alert(status):
 
     # UNCOMMENT THE LINE TO SEND THE MESSAGE
     # teams.send()
+
+# ADD THE ZERO VALUES WHEN ANY TRANSACTION IS RECEIVED
+def check_missing_zero_values():
+    global TRANSACTION_DATA
+
+    statuses = ['approved', 'processing', 'denied', 'backend_reversed', 'reversed', 'refunded', 'failed']
+    one_minute_future = TRANSACTION_DATA['time'].max() + pd.Timedelta(minutes=1)
+
+    if pd.isnull(one_minute_future):
+        one_minute_future = datetime.combine(datetime.now().date(), time(0, 0))
+
+    future_data = pd.DataFrame({'time': [one_minute_future] * 7, 'status': statuses, 'F1': [0] * 7})
+    TRANSACTION_DATA = pd.concat([TRANSACTION_DATA, future_data], ignore_index=True).sort_values(by='time')
+
+    return
 
 # FLASK ROUTES TO RUN THE APPLICATION
 
@@ -195,21 +200,6 @@ def data():
     global TRANSACTION_DATA, ANOMALIES_DATA, first
 
     data_to_add = request.get_json()
-    
-
-    def check_missing_zero_values():
-        global TRANSACTION_DATA
-
-        statuses = ['approved', 'processing', 'denied', 'backend_reversed', 'reversed', 'refunded', 'failed']
-        one_minute_future = TRANSACTION_DATA['time'].max() + pd.Timedelta(minutes=1)
-
-        if pd.isnull(one_minute_future):
-            one_minute_future = datetime.combine(datetime.now().date(), time(0, 0))
-
-        future_data = pd.DataFrame({'time': [one_minute_future] * 7, 'status': statuses, 'F1': [0] * 7})
-        TRANSACTION_DATA = pd.concat([TRANSACTION_DATA, future_data], ignore_index=True).sort_values(by='time')
-
-        return
 
     while True:
 
@@ -222,11 +212,9 @@ def data():
     mask = (TRANSACTION_DATA['time'] == data_to_add['time']) & (TRANSACTION_DATA['status'] == data_to_add['status'])
     TRANSACTION_DATA.loc[mask, 'F1'] = data_to_add['F1']
 
-
     transaction_failed_data = TRANSACTION_DATA[TRANSACTION_DATA['status'] == 'failed']
     transaction_reversed_data = TRANSACTION_DATA[TRANSACTION_DATA['status'] == 'reversed']
     transaction_denied_data = TRANSACTION_DATA[TRANSACTION_DATA['status'] == 'denied']
-
 
     anomalous = False
 
@@ -250,6 +238,7 @@ def data():
     if anomalous:
         anomalous_data = pd.DataFrame([data_to_add])
         ANOMALIES_DATA = pd.concat([ANOMALIES_DATA, anomalous_data], axis=0, ignore_index=True)
+        return 'TRANSACTION COMPLETED WITH POSSIBLE ANOMALY'
     
     return 'TRANSACTION COMPLETED'
 
