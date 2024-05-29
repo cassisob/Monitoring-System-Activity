@@ -5,27 +5,25 @@ Thomas Redman.<br/>
 
 ## 1. Introduction
 
-The challenges were created with the objective of helping you build the knowledge base needed to implement 
-the technical assessment in the end, enjoy!
+This test was given by a company for a job interview.
+
+The challenges were created with the aim of helping the candidate build the knowledge base needed to implement 
+the technical assessment in the end!
 
 - The first challenge is an analysis of hypothetical data.
 - The second challenge is the actual implementation of a solution to a real world problem. 
 
 ## 2. Pre-requisites
 
-- A development environment
+- The required Python libraries to run the development are below. Use `pip install <name of library>` to install all dependencies.
 
-```python
-from datetime import datetime, time
-from flask import Flask, jsonify, render_template, request
-import numpy as np
-import pandas as pd
-from apscheduler.schedulers.background import BackgroundScheduler
-import pymsteams
-
-from sklearn.discriminant_analysis import StandardScaler
-from sklearn.neighbors import LocalOutlierFactor
-from sklearn.linear_model import LinearRegression
+```bash
+pip install Flask
+pip install numpy
+pip install pandas
+pip install apscheduler
+pip install pymsteams
+pip install scikit-learn
 ```
 
 ## 3. Tasks
@@ -70,3 +68,9 @@ You are free to determine the methods to approve/deny the transactions, but a fe
 - Alert transactions if failed transactions are above normal;
 - Alert transactions if reversed transactions are above normal;
 - Alert transactions if denied transactions are above normal;
+
+## 4. Deliverable
+
+- The results of the test are in the "Presentation.pptx" file where is a general view of everything, the "activity_1.pynb" file, and the "activity_2" folder contains the "making process".
+
+<img src="readme_file.jpg" alt="A print of the monitoring system" width="1000">
