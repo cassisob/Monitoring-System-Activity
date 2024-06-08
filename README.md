@@ -5,7 +5,7 @@ Thomas Redman.<br/>
 
 ## 1. Introduction
 
-This test was given by a company for a job interview.
+This test was given by a brazilian company for a job interview.
 
 The challenges were created with the aim of helping the candidate build the knowledge base needed to implement 
 the technical assessment in the end!
