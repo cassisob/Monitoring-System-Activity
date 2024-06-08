@@ -71,6 +71,6 @@ You are free to determine the methods to approve/deny the transactions, but a fe
 
 ## 4. Deliverable
 
-- The results of the test are in the "Presentation.pptx" file where is a general view of everything, the "activity_1.pynb" file, and the "activity_2" folder contains the "making process".
+- The results of the test are in the "Presentation.pdf" file where is a general view of everything, the "activity_1.pynb" file, and the "activity_2" folder contains the "making process".
 
 <img src="readme_file.jpg" alt="A print of the monitoring system" width="1000">
